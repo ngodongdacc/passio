@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigurationModule } from './config/configuration.module';
+import { VoucherTriggerModule } from './voucher-trigger/voucher-trigger.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ConfigurationModule } from './config/configuration.module';
       }),
       inject: [ConfigService],
     }),
+    VoucherTriggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

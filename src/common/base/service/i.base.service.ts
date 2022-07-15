@@ -13,4 +13,6 @@ export interface IBaseService<T> {
   update(id: EntityId, data: any): Promise<T>;
 
   delete(id: EntityId): Promise<DeleteResult>;
+
+  findAll(): Promise<T[]>;
 }

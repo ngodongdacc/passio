@@ -29,13 +29,17 @@ export class VoucherTriggerController {
   }
 
   @Get(':id')
-  findOne(@Param('id') paramId: ParamId) {
-    return this.voucherTriggerService.findOne(paramId);
+  @ApiParam({ name: 'id', type: String })
+  async findOne(@Param() paramId: ParamId) {
+    const data = await this.voucherTriggerService.findOne(paramId).lean();
+    return {
+      data,
+    }
   }
 
   @Patch(':id')
   @ApiParam({ name: 'id', type: String })
-  async update(@Param()  paramId: ParamId, @Body() updateVoucherTriggerDto: UpdateVoucherTriggerDto) {
+  async update(@Param() paramId: ParamId, @Body() updateVoucherTriggerDto: UpdateVoucherTriggerDto) {
     const data = await this.voucherTriggerService.update(paramId, updateVoucherTriggerDto).lean();
     return {
       data
@@ -43,8 +47,10 @@ export class VoucherTriggerController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: ParamId) {
-    return this.voucherTriggerService.remove(id);
+  @ApiParam({ name: 'id', type: String })
+  async remove(@Param() paramId: ParamId) {
+    const data = await this.voucherTriggerService.remove(paramId).lean();
+    return { data }
   }
 
 }

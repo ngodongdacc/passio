@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsArray, IsNumber, IsOptional, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import { IsArray, IsNumber, IsObject, IsOptional, IsString, Matches, MaxLength, MinLength } from 'class-validator';
 import { PAGE, SIZE, SORT } from '../types/constant';
 
 export class ParamId {
@@ -42,11 +42,19 @@ export default class QueryCommonDto {
   @IsOptional()
   @ApiProperty({
     required: false,
-    example: `-${SORT}`,
-    description: `${SORT}: ascending,\n -${SORT}: descending`,
+    example: SORT,
+    description: `"-": ascending,\n "" : descending`,
   })
   sort?: string;
+  @IsString()
+  @IsOptional()
+  @ApiProperty({
+    required: false,
+    description: `search text in filed`,
+  })
+  search?: string;
 
+  @Transform(({ value }) => typeof value ==='string' ? [value] : value)
   @IsArray()
   @IsOptional()
   @ApiProperty({
@@ -54,6 +62,15 @@ export default class QueryCommonDto {
     default: [],
   })
   filed?: string[];
+
+  @IsObject()
+  @IsOptional()
+  @ApiProperty({
+    required: false,
+    default: {},
+    type: 'object'
+  })
+  filter?: object = {};
 }
 
 export class ResponesQuery extends QueryCommonDto { data: any = null; total: number = 0 }

@@ -1,5 +1,6 @@
 import { HttpException } from '@nestjs/common';
 import { LIMIT_MAX } from '../types/constant';
+import { ResponesQuery } from './query';
 
 class Utils {
   public sanitizePageSize = function (page: number, size: number) {
@@ -11,6 +12,20 @@ class Utils {
       skip,
     };
   };
+
+  public responseFormat = function (config: ResponesQuery) {
+    const data = typeof config.data === 'object' ? JSON.parse(JSON.stringify(config.data)) : config.data; 
+    return {
+      data,
+      meta: {
+        total: config.total,
+        page: config.page,
+        size: config.size,
+        countPage: Math.ceil(config.total / config.size),
+        sort: config.sort,
+      }
+    }
+  }
 
   public diacriticSensitiveRegex = function (string = '') {
     return string

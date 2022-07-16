@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ParamId } from 'src/common/base/entities/base.entity';
 import Utils from 'src/common/core/utils';
-import { CreateVoucherTriggerDto } from './dto/create-voucher-trigger.dto';
 import { FindAllVoucherTriggerDto } from './dto/find-all-voucher-trigger.dto';
 import { UpdateVoucherTriggerDto } from './dto/update-voucher-trigger.dto';
 import { VoucherTrigger, VoucherTriggerDocument } from './entities/voucher-trigger.entity';
@@ -13,9 +12,12 @@ export class VoucherTriggerService {
   constructor(
     @InjectModel(VoucherTrigger.name)
     private readonly modelUserUploadFile: Model<VoucherTriggerDocument>,
-  ) {}
-  create(createVoucherTriggerDto: CreateVoucherTriggerDto) {
-    return this.modelUserUploadFile.create(createVoucherTriggerDto);
+  ) { }
+  async createNew(createVoucherTrigger): Promise<VoucherTrigger> {
+    const data = new this.modelUserUploadFile({
+      ...createVoucherTrigger
+    })
+    return data.save();
   }
 
   async findSearch(config: FindAllVoucherTriggerDto) {
@@ -23,10 +25,8 @@ export class VoucherTriggerService {
     const query = { isRemoved: 0, ...config.filter };
     const [data, total] = await Promise.all([this.findQuery(query, skip, limit, config.sort), this.findCount(query)]);
     return {
-      data: {
-        data,
-        total,
-      },
+      data,
+      total,
     };
   }
 
@@ -40,15 +40,15 @@ export class VoucherTriggerService {
     return this.modelUserUploadFile.count(query);
   }
 
-  findOne(id: ParamId) {
-    return `This action returns a #${id} voucherTrigger`;
+  findOne(paramId: ParamId) {
+    return `This action returns a #${paramId.id} voucherTrigger`;
   }
 
-  update(id: ParamId, updateVoucherTriggerDto: UpdateVoucherTriggerDto) {
+  update(paramId: ParamId, updateVoucherTrigger: UpdateVoucherTriggerDto) {
     return this.modelUserUploadFile.findByIdAndUpdate(
-      id,
-      { $set: { ...updateVoucherTriggerDto } },
-      { new: true, upsert: true },
+      paramId.id,
+      { ...updateVoucherTrigger },
+      { new: true},
     );
   }
 

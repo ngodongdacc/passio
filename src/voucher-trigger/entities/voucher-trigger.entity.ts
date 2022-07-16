@@ -6,7 +6,7 @@ export class Step {
     type: 'number',
     required: true,
   })
-  variant: string;
+  variant: number;
   @Prop({
     type: 'string',
     required: true,

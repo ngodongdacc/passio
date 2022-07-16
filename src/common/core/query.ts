@@ -1,6 +1,6 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsArray, IsNumberString, IsOptional, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString, Matches, MaxLength, MinLength } from 'class-validator';
 import { PAGE, SIZE, SORT } from '../types/constant';
 
 export class ParamId {
@@ -17,25 +17,26 @@ export class ParamId {
 }
 
 export default class QueryCommonDto {
-  @IsNumberString()
+  @Transform(({ value }) => Number.parseInt(value))
+  @IsNumber()
   @IsOptional()
-  @ApiPropertyOptional({ default: PAGE })
   @ApiProperty({
-    type: 'string',
+    type: 'number',
     example: PAGE,
     required: false,
   })
-  @Transform(({ value }) => Number.parseInt(value))
-  page = PAGE;
+  page: number = PAGE;
 
-  @IsNumberString()
+  @Transform(({ value }) => Number.parseInt(value))
+  @IsNumber()
   @IsOptional()
   @ApiProperty({
-    type: 'string',
+    type: 'number',
+    default: SIZE,
     example: SIZE,
     required: false,
   })
-  size = SIZE;
+  size: number = SIZE;
 
   @IsString()
   @IsOptional()
@@ -54,6 +55,8 @@ export default class QueryCommonDto {
   })
   filed?: string[];
 }
+
+export class ResponesQuery extends QueryCommonDto { data: any = null; total: number = 0 }
 
 export class ResponseMetadataDto {
   @ApiProperty({

@@ -18,10 +18,10 @@ class Utils {
     return {
       data,
       meta: {
-        total: config.total,
-        page: config.page,
-        size: config.size,
-        countPage: Math.ceil(config.total / config.size),
+        totalRows: config.total,
+        currentPage: config.page,
+        pageSize: config.size,
+        totalPages: Math.ceil(config.total / config.size),
         sort: config.sort,
       }
     }

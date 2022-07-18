@@ -41,18 +41,18 @@ export class CreateVoucherTriggerDto {
     items: {
       type: 'array',
       items: {
-        oneOf: [
-          { $ref: getSchemaPath(StepDTo) },
-        ],
-      }
+        oneOf: [{ $ref: getSchemaPath(StepDTo) }],
+      },
     },
-    example: [[
-      {
-        variant: 100,
-        trigger: 'test'
-      }
-    ]],
-    default: []
+    example: [
+      [
+        {
+          variant: 100,
+          trigger: 'test',
+        },
+      ],
+    ],
+    default: [],
   })
   steps: StepDTo[][] = [];
 }

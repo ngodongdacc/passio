@@ -3,15 +3,16 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'node:path';
 import 'source-map-support/register';
-import { ErrorResponseTransformInterceptor } from './interceptors/error-response-transform.interceptor';
-import { SuccessResponseTransformInterceptor } from './interceptors/success-response-transform.interceptor';
-import { TransformInterceptor } from './interceptors/transform.interceptor';
+import { HttpExceptionFilter } from 'src/common/filters/http_exception.filter';
+import { ErrorResponseTransformInterceptor } from '../common/interceptors/error-response-transform.interceptor';
+import { SuccessResponseTransformInterceptor } from '../common/interceptors/success-response-transform.interceptor';
+import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
 
 export async function bootstrapApp(app: NestExpressApplication) {
   const config = new DocumentBuilder()
     .addBasicAuth()
-    .addBearerAuth()
-    .addApiKey()
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
+    // .addApiKey()
     .setTitle('Customer passion campaign')
     .setDescription('The API description')
     .setVersion('1.0')
@@ -24,7 +25,10 @@ export async function bootstrapApp(app: NestExpressApplication) {
       transform: true,
     }),
   );
-
+  app.enableCors({
+    credentials: true,
+    origin: true,
+  });
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
@@ -34,4 +38,5 @@ export async function bootstrapApp(app: NestExpressApplication) {
     new ErrorResponseTransformInterceptor(),
     new TransformInterceptor(),
   );
+  app.useGlobalFilters(new HttpExceptionFilter());
 }

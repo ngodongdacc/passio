@@ -14,18 +14,18 @@ class Utils {
   };
 
   public responseFormat = function (config: ResponesQuery) {
-    const data = typeof config.data === 'object' ? JSON.parse(JSON.stringify(config.data)) : config.data; 
+    const data = typeof config.data === 'object' ? JSON.parse(JSON.stringify(config.data)) : config.data;
     return {
       data,
       meta: {
-        totalRows: config.total,
+        totalRows: config.total || 0,
         currentPage: config.page,
         pageSize: config.size,
         totalPages: Math.ceil(config.total / config.size),
         sort: config.sort,
-      }
-    }
-  }
+      },
+    };
+  };
 
   public diacriticSensitiveRegex = function (string = '') {
     return string

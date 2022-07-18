@@ -12,19 +12,19 @@ export class VoucherTriggerService {
   constructor(
     @InjectModel(VoucherTrigger.name)
     private readonly modelUserUploadFile: Model<VoucherTriggerDocument>,
-  ) { }
+  ) {}
   async createNew(createVoucherTrigger): Promise<VoucherTrigger> {
     const data = new this.modelUserUploadFile({
-      ...createVoucherTrigger
-    })
+      ...createVoucherTrigger,
+    });
     return data.save();
   }
 
   async findSearch(config: FindAllVoucherTriggerDto) {
     const { skip, limit } = Utils.sanitizePageSize(config.page, config.size);
     let query = { isRemoved: 0, ...config.filter };
-    if(config.search && config.filed && config.filed.length) {
-      query =  Utils.convertSearchRegex(config.search, config.filed, query);
+    if (config.search && config.filed && config.filed.length) {
+      query = Utils.convertSearchRegex(config.search, config.filed, query);
     }
 
     const [data, total] = await Promise.all([this.findQuery(query, skip, limit, config.sort), this.findCount(query)]);
@@ -49,14 +49,10 @@ export class VoucherTriggerService {
   }
 
   update(paramId: ParamId, updateVoucherTrigger: UpdateVoucherTriggerDto) {
-    return this.modelUserUploadFile.findByIdAndUpdate(
-      paramId.id,
-      { ...updateVoucherTrigger },
-      { new: true },
-    );
+    return this.modelUserUploadFile.findByIdAndUpdate(paramId.id, { ...updateVoucherTrigger }, { new: true });
   }
 
   remove(paramId: ParamId) {
-    return this.modelUserUploadFile.findByIdAndUpdate(paramId.id, { $set: { isRemoved: 1 } }, { new: true },);
+    return this.modelUserUploadFile.findByIdAndUpdate(paramId.id, { $set: { isRemoved: 1 } }, { new: true });
   }
 }

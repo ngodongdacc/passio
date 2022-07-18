@@ -45,23 +45,25 @@ export default class QueryCommonDto {
   @ApiProperty({
     required: false,
     example: SORT,
-    description: `"-": ascending,\n "" : descending`,
+    description: `"": ascending,\n "-" : descending`,
   })
   sort?: string;
   @IsString()
   @IsOptional()
   @ApiProperty({
     required: false,
-    description: `search text in filed`,
+    description: `relative search by input value`,
   })
   search?: string;
 
-  @Transform(({ value }) => typeof value ==='string' ? [value] : value)
+  @Transform(({ value }) => (typeof value === 'string' ? [value] : value))
   @IsArray()
   @IsOptional()
   @ApiProperty({
     required: false,
     default: [],
+    example: ['name', 'brandCode'],
+    description: 'list of fields to search',
   })
   filed?: string[];
 
@@ -70,12 +72,16 @@ export default class QueryCommonDto {
   @ApiProperty({
     required: false,
     default: {},
-    type: 'object'
+    type: 'object',
+    description: 'extended query',
   })
   filter?: object = {};
 }
 
-export class ResponesQuery extends QueryCommonDto { data: any = null; total: number = 0 }
+export class ResponesQuery extends QueryCommonDto {
+  data: any = null;
+  total: number;
+}
 
 export class ResponseMetadataDto {
   @ApiProperty({
@@ -128,19 +134,18 @@ export class ResponseStatusDto {
   message: string;
 }
 
-export class ResponseDto {
+export class DefautlResponseDto {
   @ApiProperty({
     type: ResponseStatusDto,
   })
   status: ResponseStatusDto;
 
-  @ApiProperty({
-    type: ResponseStatusDto
-  })
+  @ApiProperty()
   data: any;
-
+}
+export class ResponseDto extends DefautlResponseDto {
   @ApiProperty({
     type: ResponseMetadataDto,
   })
-  meta?: ResponseMetadataDto
+  meta?: ResponseMetadataDto;
 }

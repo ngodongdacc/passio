@@ -2,11 +2,10 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
-import { HttpExceptionFilter } from './common/filters/http_exception.filter';
 import { bootstrapApp } from './utils/bootstrap-app';
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.useGlobalFilters(new HttpExceptionFilter());
+  const logger: any = ['log', 'error', 'warn', 'debug', 'verbose'];
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { logger });
   bootstrapApp(app);
   const configService: ConfigService = app.get(ConfigService);
   const port: number = configService.get<number>('port');

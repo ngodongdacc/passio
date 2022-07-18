@@ -2,7 +2,7 @@ import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { IsArray, IsDateString, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { StepDTo } from './step.dto';
 
-export class VoucherTriggerDto {
+export class UserCampaigDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()

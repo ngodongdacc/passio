@@ -4,10 +4,10 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'node:path';
 import 'source-map-support/register';
 import { HttpExceptionFilter } from 'src/common/filters/http_exception.filter';
+import { TransformInterceptor } from 'src/common/interceptors/transform.interceptor';
 import { ErrorResponseTransformInterceptor } from '../common/interceptors/error-response-transform.interceptor';
-import { SuccessResponseTransformInterceptor } from '../common/interceptors/success-response-transform.interceptor';
-import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
 
+//
 export async function bootstrapApp(app: NestExpressApplication) {
   const config = new DocumentBuilder()
     .addBasicAuth()
@@ -33,10 +33,6 @@ export async function bootstrapApp(app: NestExpressApplication) {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
 
-  app.useGlobalInterceptors(
-    new SuccessResponseTransformInterceptor(),
-    new ErrorResponseTransformInterceptor(),
-    new TransformInterceptor(),
-  );
+  app.useGlobalInterceptors(new ErrorResponseTransformInterceptor(), new TransformInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
 }

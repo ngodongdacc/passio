@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigurationModule } from './config/configuration.module';
-import { VoucherTriggerModule } from './voucher-trigger/voucher-trigger.module';
+import { UserCampaigModule } from './user-campaig/user-campaig.module';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { VoucherTriggerModule } from './voucher-trigger/voucher-trigger.module';
       }),
       inject: [ConfigService],
     }),
-    VoucherTriggerModule,
+    UserCampaigModule,
   ],
   controllers: [AppController],
   providers: [AppService],

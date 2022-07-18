@@ -14,9 +14,8 @@ class Utils {
   };
 
   public responseFormat = function (config: ResponesQuery) {
-    const data = typeof config.data === 'object' ? JSON.parse(JSON.stringify(config.data)) : config.data;
     return {
-      data,
+      data: config.data,
       meta: {
         totalRows: config.total || 0,
         currentPage: config.page,

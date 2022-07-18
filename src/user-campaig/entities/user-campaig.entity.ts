@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-export const VoucherTriggerCollection = 'voucher_trigger';
-export type VoucherTriggerDocument = VoucherTrigger & Document;
+export const UserCampaigCollection = 'user_campaig';
+export type UserCampaigDocument = UserCampaig & Document;
 export class Step {
   @Prop({
     type: 'number',
@@ -16,7 +16,7 @@ export class Step {
 @Schema({
   timestamps: true,
 })
-export class VoucherTrigger {
+export class UserCampaig {
   @Prop({
     type: 'string',
     required: true,
@@ -45,6 +45,11 @@ export class VoucherTrigger {
   isRemoved?: number;
 
   @Prop({
+    type: 'string',
+  })
+  caption?: string;
+
+  @Prop({
     type: 'date',
     required: true,
   })
@@ -64,4 +69,4 @@ export class VoucherTrigger {
   steps: [Step[]];
 }
 
-export const VoucherTriggerSchema = SchemaFactory.createForClass(VoucherTrigger);
+export const UserCampaigSchema = SchemaFactory.createForClass(UserCampaig);

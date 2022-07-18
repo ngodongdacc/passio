@@ -54,6 +54,6 @@ export class UserCampaigService {
   }
 
   remove(paramId: ParamId) {
-    return this.userCampaigDocument.update(paramId, { isRemoved: 1 }, { new: true });
+    return this.userCampaigDocument.findByIdAndUpdate(paramId.id, { isRemoved: 1 }, { new: true });
   }
 }
